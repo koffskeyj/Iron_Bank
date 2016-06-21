@@ -17,7 +17,7 @@
   <tr>
     <br>
     {% for transaction in object_list %}
-       <td><a href="{% url 'detail_view' pk=transaction.id %}">{{transaction.amount}}</a></td>
+       <td><a href="{% url 'detail_view' transaction.pk %}">{{transaction.amount}}</a></td>
        <td>{{transaction.transaction_type}}</td>
   </tr>
     {% endfor %}

@@ -8,7 +8,7 @@
 <body>
 <div class="container">
 {% block content %}
-<h3>Balance : {{balance}}</h3>
+<br>
 <table class="table">
   <tr>
     <th>Business</th>
@@ -19,14 +19,12 @@
   </tr>
   <tr>
     <br>
-    {% for transaction in object_list %}
        <td>{{transaction.business}}</td>
        <td>{{transaction.amount}}</td>
        <td>{{transaction.transaction_type}}</td>
        <td>{{transaction.user}}</td>
        <td>{{transaction.created}}</td>
   </tr>
-    {% endfor %}
 {% endblock %}
 </table>
 </div>

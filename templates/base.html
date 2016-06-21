@@ -11,7 +11,12 @@
     <div class="container">
       {% if request.user.is_authenticated %}
       <br>
+      <h4>{{request.user}}</h4>
+      <br>
       <a class="btn btn-info" href="{% url 'logout' %}?next=/" role="button">Logout</a>
+      <a class="btn btn-info" href="{% url 'profile_view' %}" role="button">Profile</a>
+      <a class="btn btn-info" href="{% url 'create_transaction_view' %}" role="button">Create Transaction</a>
+      <a class="btn btn-info" href="{% url 'create_transfer_view' %}" role="button">Transfer Funds</a>
       {% else %}
       <br>
         <a class="btn btn-info" href="{% url 'create_user_view' %}" role="button">Create User</a>

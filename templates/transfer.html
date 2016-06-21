@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<br>
+  <h3>{{balance}}</h3>
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="Complete" value="Complete">
+  </form>
+{% endblock %}

@@ -16,13 +16,15 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from banking.views import IndexView, CreateUserView, TransactionView, DetailedView
+from banking.views import IndexView, CreateUserView, TransactionView, TransactionDetailedView, CreateTransactionView, CreateTransferView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('django.contrib.auth.urls')),
-    url(r'^create_user$', CreateUserView.as_view(), name="create_user_view"),
     url(r'^$', IndexView.as_view(), name="index_view"),
+    url(r'^create_user/$', CreateUserView.as_view(), name="create_user_view"),
     url(r'^accounts/profile/$', TransactionView.as_view(), name="profile_view"),
-    url(r'^accounts/profile/details/(?P<pk>\d+)$', DetailedView.as_view(), name="detail_view")
+    url(r'^accounts/profile/details/(?P<pk>\d+)/$', TransactionDetailedView.as_view(), name="detail_view"),
+    url(r'^create_transaction/$', CreateTransactionView.as_view(), name="create_transaction_view"),
+    url(r'^create_transfer/$', CreateTransferView.as_view(), name="create_transfer_view")
 ]
