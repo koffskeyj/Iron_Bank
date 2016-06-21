@@ -11,14 +11,20 @@
 <h3>Balance : {{balance}}</h3>
 <table class="table">
   <tr>
+    <th>Business</th>
     <th>Amount</th>
     <th>Type</th>
+    <th>User</th>
+    <th>Created</th>
   </tr>
   <tr>
     <br>
     {% for transaction in object_list %}
-       <td><a href="{% url 'detail_view' pk=transaction.id %}">{{transaction.amount}}</a></td>
+       <td>{{transaction.business}}</td>
+       <td>{{transaction.amount}}</td>
        <td>{{transaction.transaction_type}}</td>
+       <td>{{transaction.user}}</td>
+       <td>{{transaction.created}}</td>
   </tr>
     {% endfor %}
 {% endblock %}

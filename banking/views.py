@@ -26,12 +26,30 @@ class TransactionView(LoginRequiredMixin, ListView):
          balance = 0
          transactions = Transaction.objects.filter(user=self.request.user)
          for transaction in transactions:
-             if transaction.transaction_method == "Credit":
+             if transaction.transaction_type == "Deposit":
                 balance += transaction.amount
-             if transaction.transaction_method == "Debit":
+             if transaction.transaction_type == "Withdrawal":
                 balance -= transaction.amount
          context['balance'] = balance
          return context
 
-     class Meta:
-         ordering = ["-created"]
+
+class DetailView(LoginRequiredMixin, ListView):
+
+    template_name = 'banking/detail_list.html'
+
+    def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user)
+
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        balance = 0
+        transactions = Transaction.objects.filter(user=self.request.user)
+        for transaction in transactions:
+            if transaction.transaction_type == "Deposit":
+               balance += transaction.amount
+            if transaction.transaction_type == "Withdrawal":
+               balance -= transaction.amount
+        context['balance'] = balance
+        return context
