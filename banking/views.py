@@ -34,7 +34,7 @@ class TransactionView(LoginRequiredMixin, ListView):
          return context
 
 
-class DetailView(LoginRequiredMixin, ListView):
+class DetailedView(LoginRequiredMixin, ListView):
 
     template_name = 'banking/detail_list.html'
 
