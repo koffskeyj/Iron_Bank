@@ -12,6 +12,7 @@
       {% if request.user.is_authenticated %}
       <br>
       <h4>{{request.user}}</h4>
+      <h2>Account number: {{request.user.id}}</h2>
       <br>
       <a class="btn btn-info" href="{% url 'logout' %}?next=/" role="button">Logout</a>
       <a class="btn btn-info" href="{% url 'profile_view' %}" role="button">Profile</a>

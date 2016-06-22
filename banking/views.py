@@ -5,7 +5,19 @@ from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from banking.models import Transaction
+from django import forms
 import datetime
+
+
+def balance(self):
+    self.balance = 0
+    self.transactions = Transaction.objects.filter(user=self.request.user)
+    for transaction in self.transactions:
+        if transaction.transaction_type == "Deposit":
+            self.balance += transaction.amount
+        if transaction.transaction_type == "Withdrawal":
+            self.balance -= transaction.amount
+    return self.balance
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -27,7 +39,12 @@ class CreateTransactionView(CreateView):
     def form_valid(self, form):
         transaction = form.save(commit=False)
         transaction.user = self.request.user
-        return super().form_valid(form)
+        mybalance = balance(self)
+        if transaction.amount > mybalance:
+            raise forms.ValidationError("No more money")
+        return super(CreateTransactionView, self).form_valid(form)
+
+
 
 
 class CreateTransferView(LoginRequiredMixin, CreateView):
@@ -52,7 +69,6 @@ class TransactionView(LoginRequiredMixin, ListView):
              if transaction.transaction_type == "Withdrawal":
                 balance -= transaction.amount
          context['balance'] = balance
-         
          return context
 
 
