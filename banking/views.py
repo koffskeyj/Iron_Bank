@@ -19,15 +19,15 @@ def balance(self):
             self.balance -= transaction.amount
     return self.balance
 
-def transfer_balance(self):
-    self.balance = 0
-    self.transactions = Transaction.objects.filter(user=???)
-    for transaction in self.transactions:
-        if transaction.transaction_type == "Deposit":
-            self.balance += transaction.amount
-        if transaction.transaction_type == "Withdrawal":
-            self.balance -= transaction.amount
-    return self.balance
+#def transfer_balance(self):
+    #self.balance = 0
+    # self.transactions = Transaction.objects.filter(user=???)
+    # for transaction in self.transactions:
+        # if transaction.transaction_type == "Deposit":
+            # self.balance += transaction.amount
+        # if transaction.transaction_type == "Withdrawal":
+        #     # self.balance -= transaction.amount
+    # return self.balance
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -62,13 +62,13 @@ class CreateTransferView(LoginRequiredMixin, CreateView):
     fields = ['amount', 'business']
     success_url = "/"
 
-    def form_valid(self, form):
-        transfer = form.save(commit=False)
-        transfer.user = ???
-        balance = transfer_balance(self)
-        if transfer.business == transfer.user:
-            balance += transfer.amount
-        return super(CreateTransferView, self).form_valid(form)
+    # def form_valid(self, form):
+        # transfer = form.save(commit=False)
+        # transfer.user = ???
+        # balance = transfer_balance(self)
+        # if transfer.business == transfer.user:
+            # balance += transfer.amount
+        # return super(CreateTransferView, self).form_valid(form)
 
 class TransactionView(LoginRequiredMixin, ListView):
 
