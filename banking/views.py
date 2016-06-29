@@ -9,15 +9,15 @@ from django import forms
 import datetime
 
 
-def balance(self):
-    self.balance = 0
-    self.transactions = Transaction.objects.filter(user=self.request.user)
-    for transaction in self.transactions:
+def balance(user):
+    balance = 0
+    transactions = Transaction.objects.filter(user=user)
+    for transaction in transactions:
         if transaction.transaction_type == "Deposit":
-            self.balance += transaction.amount
+            balance += transaction.amount
         if transaction.transaction_type == "Withdrawal":
-            self.balance -= transaction.amount
-    return self.balance
+            balance -= transaction.amount
+    return balance
 
 #def transfer_balance(self):
     #self.balance = 0
@@ -49,9 +49,12 @@ class CreateTransactionView(CreateView):
     def form_valid(self, form):
         transaction = form.save(commit=False)
         transaction.user = self.request.user
-        mybalance = balance(self)
+        mybalance = balance(self.request.user)
+
         if transaction.amount > mybalance:
+            form.add_error('No more money')
             raise forms.ValidationError("No more money")
+            return self.form_invalid(form)
         return super(CreateTransactionView, self).form_valid(form)
 
 
@@ -62,13 +65,13 @@ class CreateTransferView(LoginRequiredMixin, CreateView):
     fields = ['amount', 'business']
     success_url = "/"
 
-    # def form_valid(self, form):
-        # transfer = form.save(commit=False)
-        # transfer.user = ???
-        # balance = transfer_balance(self)
-        # if transfer.business == transfer.user:
-            # balance += transfer.amount
-        # return super(CreateTransferView, self).form_valid(form)
+    def form_valid(self, form):
+        transfer = form.save(commit=False)
+        transfer.user = self.request.user
+        bal = balance(self.request.user)
+        transfer_rec = User.objects.get(id=transfer.business)
+        Transaction.objects.create(user=transfer_rec, amount=transfer.amount, business="", transaction_type='Deposit')
+        return super(CreateTransferView, self).form_valid(form)
 
 class TransactionView(LoginRequiredMixin, ListView):
 
